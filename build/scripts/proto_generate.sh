@@ -45,7 +45,7 @@ done
 
 # move proto files to the right places
 cp -r github.com/berachain/polaris/* ../
-rm -rf github.com/berachain
+rm -rf github.com
 
 cd ../
 
