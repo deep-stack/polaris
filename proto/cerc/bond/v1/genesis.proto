@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package cerc.bond.v1;
+
+option go_package = "github.com/berachain/polaris/cosmos/x/bond/types";
+
+import "gogoproto/gogo.proto";
+import "cerc/bond/v1/bond.proto";
+
+// GenesisState defines the bond module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [(gogoproto.nullable) = false];
+
+  // bonds defines all the bonds
+  // TODO: Add nullable = false ?
+  repeated Bond bonds = 2 [(gogoproto.moretags) = "json:\"bonds\" yaml:\"bonds\""];
+}
