@@ -40,6 +40,7 @@ import (
 	polarruntime "github.com/berachain/polaris/cosmos/runtime"
 	"github.com/berachain/polaris/cosmos/runtime/ante"
 	"github.com/berachain/polaris/cosmos/runtime/miner"
+	bondkeeper "github.com/berachain/polaris/cosmos/x/bond/keeper"
 	evmkeeper "github.com/berachain/polaris/cosmos/x/evm/keeper"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -109,6 +110,9 @@ type SimApp struct {
 
 	// polaris required keeper
 	EVMKeeper *evmkeeper.Keeper
+
+	// laconic keepers
+	BondKeeper bondkeeper.Keeper
 }
 
 // NewPolarisApp returns a reference to an initialized SimApp.
@@ -184,6 +188,7 @@ func NewPolarisApp(
 		&app.EvidenceKeeper,
 		&app.ConsensusParamsKeeper,
 		&app.EVMKeeper,
+		&app.BondKeeper,
 	); err != nil {
 		panic(err)
 	}

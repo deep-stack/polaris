@@ -42,7 +42,9 @@ import (
 	evidencetypes "cosmossdk.io/x/evidence/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 
+	bondmodulev1 "github.com/berachain/polaris/cosmos/api/cerc/bond/module/v1"
 	evmmodulev1alpha1 "github.com/berachain/polaris/cosmos/api/polaris/evm/module/v1alpha1"
+	bondtypes "github.com/berachain/polaris/cosmos/x/bond/types"
 	evmtypes "github.com/berachain/polaris/cosmos/x/evm/types"
 
 	"github.com/cosmos/cosmos-sdk/runtime"
@@ -62,6 +64,7 @@ import (
 
 	_ "cosmossdk.io/x/evidence"                       // import for side-effects
 	_ "cosmossdk.io/x/upgrade"                        // import for side-effects
+	_ "github.com/berachain/polaris/cosmos/x/bond"    // import for side-effects
 	_ "github.com/berachain/polaris/cosmos/x/evm"     // import for side-effects
 	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config" // import for side-effects
 	_ "github.com/cosmos/cosmos-sdk/x/auth/vesting"   // import for side-effects
@@ -89,6 +92,7 @@ var (
 			Permissions: []string{authtypes.Burner}},
 		{Account: evmtypes.ModuleName,
 			Permissions: []string{authtypes.Minter, authtypes.Burner}},
+		{Account: bondtypes.ModuleName},
 	}
 
 	// blocked account addresses.
@@ -169,6 +173,7 @@ func MakeAppConfig(bech32Prefix string) depinject.Config {
 						vestingtypes.ModuleName,
 						consensustypes.ModuleName,
 						evmtypes.ModuleName,
+						bondtypes.ModuleName,
 					},
 					// When ExportGenesis is not specified, the export genesis module order
 					// is equal to the init genesis order
@@ -245,6 +250,10 @@ func MakeAppConfig(bech32Prefix string) depinject.Config {
 			{
 				Name:   evmtypes.ModuleName,
 				Config: appconfig.WrapAny(&evmmodulev1alpha1.Module{}),
+			},
+			{
+				Name:   bondtypes.ModuleName,
+				Config: appconfig.WrapAny(&bondmodulev1.Module{}),
 			},
 		},
 	}),
